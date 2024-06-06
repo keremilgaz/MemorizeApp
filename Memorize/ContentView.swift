@@ -8,21 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis : Array<String> = ["❤️","💙","🤍","💛","❤️‍🩹","🩷","💜","🤎"]
+    
+    @State var emojis : Array<String> = ["❤️","💙","🤍","💛","❤️‍🩹","🩷","💜","🤎"]
+    
     
     @State var cardCount : Int = 4
+    @State var ThemeNumber: Int = 1
     var body: some View {
         VStack{
+            Text("Memorize!")
+                .font(.largeTitle).foregroundColor(.black)
             ScrollView{
                 Cards
             }
             .foregroundColor(.black)
             Spacer()
-            CardCountAdjuster
+            //CardCountAdjuster
+            ThemePicker
         }
         .padding()
     }
-    
     
     var CardCountAdjuster: some View{
         HStack{
@@ -32,9 +37,38 @@ struct ContentView: View {
         }.imageScale(.large)
     }
     
+        
+    var ThemePicker: some View{
+        HStack{
+            Button(action:{
+                ThemeNumber = 1
+                emojis = ["❤️", "💙", "🤍", "💛", "❤️‍🩹", "🩷", "💜", "🤎","❤️", "💙", "🤍", "💛", "❤️‍🩹", "🩷", "💜", "🤎"]
+                emojis.shuffle()
+            },label:{
+                Image(systemName: "suit.heart")
+            })
+            Spacer()
+            Button(action:{
+                ThemeNumber = 2
+                emojis = ["🇧🇷", "🇨🇦", "🇹🇷", "🇬🇧", "🇦🇺", "🇧🇧", "🇧🇼", "🇵🇹","🇧🇷", "🇨🇦", "🇹🇷", "🇬🇧", "🇦🇺", "🇧🇧", "🇧🇼", "🇵🇹"]
+                emojis.shuffle()
+            },label:{
+                Image(systemName: "flag.filled.and.flag.crossed")
+            })
+            Spacer()
+            Button(action:{
+                ThemeNumber = 3
+                emojis =  ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒","🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒"]
+                emojis.shuffle()
+            },label:{
+                Image(systemName: "car")
+            })
+        }.imageScale(.large).font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+    }
+       
     var Cards: some View{
-        LazyVGrid(columns:[GridItem(.adaptive(minimum: 120))]){
-            ForEach(0..<cardCount, id: \.self) { index in
+        LazyVGrid(columns:[GridItem(.adaptive(minimum: 60))]){
+            ForEach(0..<emojis.count, id: \.self) { index in
                 CardView(content: emojis[index])
             }
             .aspectRatio(2/3,contentMode: .fit)
@@ -50,6 +84,7 @@ struct ContentView: View {
             })
             .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
     }
+
     
     var CardRemover : some View{
         return CardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus")
