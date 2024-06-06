@@ -11,9 +11,6 @@ struct ContentView: View {
     
     @State var emojis : Array<String> = ["❤️","💙","🤍","💛","❤️‍🩹","🩷","💜","🤎"]
     
-    
-    @State var cardCount : Int = 4
-    @State var ThemeNumber: Int = 1
     var body: some View {
         VStack{
             Text("Memorize!")
@@ -23,25 +20,16 @@ struct ContentView: View {
             }
             .foregroundColor(.black)
             Spacer()
-            //CardCountAdjuster
             ThemePicker
         }
         .padding()
     }
     
-    var CardCountAdjuster: some View{
-        HStack{
-            CardAdder
-            Spacer()
-            CardRemover
-        }.imageScale(.large)
-    }
-    
-        
+
+
     var ThemePicker: some View{
         HStack{
             Button(action:{
-                ThemeNumber = 1
                 emojis = ["❤️", "💙", "🤍", "💛", "❤️‍🩹", "🩷", "💜", "🤎","❤️", "💙", "🤍", "💛", "❤️‍🩹", "🩷", "💜", "🤎"]
                 emojis.shuffle()
             },label:{
@@ -49,7 +37,6 @@ struct ContentView: View {
             })
             Spacer()
             Button(action:{
-                ThemeNumber = 2
                 emojis = ["🇧🇷", "🇨🇦", "🇹🇷", "🇬🇧", "🇦🇺", "🇧🇧", "🇧🇼", "🇵🇹","🇧🇷", "🇨🇦", "🇹🇷", "🇬🇧", "🇦🇺", "🇧🇧", "🇧🇼", "🇵🇹"]
                 emojis.shuffle()
             },label:{
@@ -57,7 +44,6 @@ struct ContentView: View {
             })
             Spacer()
             Button(action:{
-                ThemeNumber = 3
                 emojis =  ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒","🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒"]
                 emojis.shuffle()
             },label:{
@@ -74,25 +60,7 @@ struct ContentView: View {
             .aspectRatio(2/3,contentMode: .fit)
         }
     }
-    func CardCountAdjuster(by offset: Int, symbol:String) -> some View{
-        
-            Button(action: {
-                cardCount += offset
-                
-            }, label: {
-                Image(systemName: symbol)
-            })
-            .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
-    }
 
-    
-    var CardRemover : some View{
-        return CardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus")
-    }
-    
-    var CardAdder : some View{
-        return CardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus")
-    }
 }
 
 struct CardView: View{
